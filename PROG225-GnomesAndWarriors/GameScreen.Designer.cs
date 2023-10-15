@@ -28,7 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            tmrHeartbeat = new System.Windows.Forms.Timer(components);
             SuspendLayout();
+            // 
+            // tmrHeartbeat
+            // 
+            tmrHeartbeat.Enabled = true;
+            tmrHeartbeat.Interval = 25;
+            tmrHeartbeat.Tick += tmrHeartbeat_Tick;
             // 
             // frmGameScreen
             // 
@@ -40,9 +48,14 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gnomes and Warriors";
             WindowState = FormWindowState.Maximized;
+            Paint += frmGameScreen_Paint;
+            KeyDown += frmGameScreen_KeyDown;
+            KeyUp += frmGameScreen_KeyUp;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer tmrHeartbeat;
     }
 }
