@@ -51,6 +51,8 @@
             Paint += frmGameScreen_Paint;
             KeyDown += frmGameScreen_KeyDown;
             KeyUp += frmGameScreen_KeyUp;
+            MouseDown += frmGameScreen_MouseDown;
+            MouseUp += frmGameScreen_MouseUp;
             ResumeLayout(false);
         }
 

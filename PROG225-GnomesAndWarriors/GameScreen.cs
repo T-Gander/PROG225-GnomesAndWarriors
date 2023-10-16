@@ -8,7 +8,8 @@ namespace PROG225_GnomesAndWarriors
     {
         private int gameLevel = 0;
         private Point mouseLocation;
-        public bool UpPressed, DownPressed, LeftPressed, RightPressed;
+        private int mouseHeldCounter = 0;
+        public bool UpPressed, DownPressed, LeftPressed, RightPressed, MouseHeld;
 
         public static string GameDirectory = Environment.CurrentDirectory;
 
@@ -22,12 +23,12 @@ namespace PROG225_GnomesAndWarriors
 
         public frmGameScreen()
         {
-            
             GameScreen = this;
             UpPressed = false;
             DownPressed = false;
             LeftPressed = false;
             RightPressed = false;
+            MouseHeld = false;
 
             InitializeComponent();
             tmrHeartbeat.Interval = 25;
@@ -46,13 +47,16 @@ namespace PROG225_GnomesAndWarriors
             {
                 Heartbeat.Invoke();
                 Invalidate();
+
+                if (MouseHeld) mouseHeldCounter++;
+                else mouseHeldCounter = 0;
             }
         }
 
         private void tmrHeartbeat_Tick(object sender, EventArgs e)
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
-            Debug.WriteLine($"My current location is {Player1.Location}");
+
         }
 
         private Point GetMouseLocation()
@@ -70,6 +74,8 @@ namespace PROG225_GnomesAndWarriors
                     p.Visible = false;
                     e.Graphics.DrawImage(p.Image, p.Left, p.Top, p.Width, p.Height);
                 }
+
+            if (MouseHeld) Player1.ChargeSpell(e, mouseHeldCounter);
         }
 
         private void CheckKeyPress(KeyEventArgs e)
@@ -124,6 +130,16 @@ namespace PROG225_GnomesAndWarriors
         private void frmGameScreen_KeyUp(object sender, KeyEventArgs e)
         {
             CheckKeyRelease(e);
+        }
+
+        private void frmGameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            MouseHeld = true;
+        }
+
+        private void frmGameScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            MouseHeld = false;
         }
     }
 }

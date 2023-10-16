@@ -15,7 +15,13 @@ namespace PROG225_GnomesAndWarriors
         private int pictureIndex = 0;
         private int currentWaitFrame = 0;
         private const int WAITFRAMES = 6;
+        private int spellLocationX;
+        private int spellLocationY;
+        private const int SPELLOFFSETRIGHT = 68;
+        private const int SPELLOFFSETLEFT = 0;
+
         private int level;
+
         public PictureBox PlayerPicture { get; set; }
         private Image[] rightGifArray, leftGifArray, currentGifArray;
 
@@ -39,6 +45,9 @@ namespace PROG225_GnomesAndWarriors
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Location = Location
             };
+
+            spellLocationX = Location.X + SPELLOFFSETRIGHT;
+            spellLocationY = Location.Y + SPELLOFFSETRIGHT;
         }
 
         public static void LevelUp()
@@ -67,12 +76,18 @@ namespace PROG225_GnomesAndWarriors
             if (frmGameScreen.GameScreen.LeftPressed)
             {
                 currentGifArray = leftGifArray;
-                
+                spellLocationX = Location.X + SPELLOFFSETLEFT;
+                spellLocationY = Location.Y + SPELLOFFSETRIGHT;
             }
             else if (frmGameScreen.GameScreen.RightPressed)
             {
                 currentGifArray = rightGifArray;
+                spellLocationX = Location.X + SPELLOFFSETRIGHT;
+                spellLocationY = Location.Y + SPELLOFFSETRIGHT;
             }
+
+            if (frmGameScreen.GameScreen.UpPressed) spellLocationY = Location.Y + SPELLOFFSETRIGHT;
+            else if (frmGameScreen.GameScreen.DownPressed) spellLocationY = Location.Y + SPELLOFFSETRIGHT;
             
             PlayerPicture.Image = currentGifArray[pictureIndex];
 
@@ -85,6 +100,8 @@ namespace PROG225_GnomesAndWarriors
             {
                 currentWaitFrame++;
             }
+
+            //Code to update spell location
 
             PlayerPicture.Invalidate();
         }
@@ -111,6 +128,40 @@ namespace PROG225_GnomesAndWarriors
             }
 
             PlayerPicture.Location = Location;
+        }
+
+        public void ChargeSpell(PaintEventArgs e, int mouseHeldCounter)
+        {
+            Pen myPen = new Pen(Color.Blue,1);
+
+            switch (mouseHeldCounter)
+            {
+                case <10:
+                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX, spellLocationY, 2, 2));
+                    break;
+
+                case <20:
+                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 3, spellLocationY - 3, 5, 5));
+                    break;
+
+                case <30:
+                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 6, spellLocationY - 6, 8, 8));
+                    break;
+
+                case <40:
+                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    break;
+
+                case > 40:
+                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    break;
+            }
+
+        }
+
+        public void ReleaseSpell()
+        {
+
         }
     }
 }
