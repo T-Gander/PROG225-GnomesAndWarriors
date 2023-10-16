@@ -156,7 +156,6 @@ namespace PROG225_GnomesAndWarriors
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
                     break;
             }
-
         }
 
         public void ReleaseSpell()
