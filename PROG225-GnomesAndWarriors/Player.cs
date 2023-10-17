@@ -19,6 +19,7 @@ namespace PROG225_GnomesAndWarriors
         private int spellLocationY;
         private const int SPELLOFFSETRIGHT = 68;
         private const int SPELLOFFSETLEFT = 0;
+        private Spell.ChargeLevel currentCharge;
 
         private int level;
 
@@ -138,29 +139,35 @@ namespace PROG225_GnomesAndWarriors
             {
                 case <10:
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX, spellLocationY, 2, 2));
+                    currentCharge = Spell.ChargeLevel.Level1;
                     break;
 
                 case <20:
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 3, spellLocationY - 3, 5, 5));
+                    currentCharge = Spell.ChargeLevel.Level2;
                     break;
 
                 case <30:
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 6, spellLocationY - 6, 8, 8));
+                    currentCharge = Spell.ChargeLevel.Level3;
                     break;
 
                 case <40:
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    currentCharge = Spell.ChargeLevel.Level4;
                     break;
 
                 case > 40:
                     e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    currentCharge = Spell.ChargeLevel.Level5;
                     break;
             }
         }
 
         public void ReleaseSpell()
         {
-
+            Spell newSpell = new Spell(currentCharge, frmGameScreen.GetMouseLocation(), new Point(spellLocationX, spellLocationY));
+            frmGameScreen.GameScreen.HeartbeatPaintEvent += newSpell.Move;
         }
     }
 }

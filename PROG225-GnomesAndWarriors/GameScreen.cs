@@ -9,7 +9,14 @@ namespace PROG225_GnomesAndWarriors
         private int gameLevel = 0;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
-        public bool UpPressed, DownPressed, LeftPressed, RightPressed, MouseHeld;
+        private PaintEventArgs heartbeatArgs;
+
+
+        public bool UpPressed, DownPressed, LeftPressed, RightPressed;
+
+        public enum MouseHeld { Held, NotHeld, NoSpell }
+
+        private MouseHeld mouseHeld = MouseHeld.NoSpell;
 
         public static string GameDirectory = Environment.CurrentDirectory;
 
@@ -19,7 +26,10 @@ namespace PROG225_GnomesAndWarriors
         public static Screen MyScreen = Screen.PrimaryScreen;
 
         public delegate void TimerEvent();
+        public delegate void PaintTimerEvent(PaintEventArgs e);
+
         public event TimerEvent Heartbeat;
+        public event PaintTimerEvent HeartbeatPaintEvent;
 
         public frmGameScreen()
         {
@@ -28,7 +38,6 @@ namespace PROG225_GnomesAndWarriors
             DownPressed = false;
             LeftPressed = false;
             RightPressed = false;
-            MouseHeld = false;
 
             InitializeComponent();
             tmrHeartbeat.Interval = 25;
@@ -48,7 +57,18 @@ namespace PROG225_GnomesAndWarriors
                 Heartbeat.Invoke();
                 Invalidate();
 
-                if (MouseHeld) mouseHeldCounter++;
+                if (mouseHeld == MouseHeld.Held) mouseHeldCounter++;
+                else mouseHeldCounter = 0;
+            }
+        }
+
+        private void HeartbeatPaintEventHandler(PaintEventArgs e)
+        {
+            if (HeartbeatPaintEvent != null)
+            {
+                HeartbeatPaintEvent.Invoke(e);
+
+                if (mouseHeld == MouseHeld.Held) mouseHeldCounter++;
                 else mouseHeldCounter = 0;
             }
         }
@@ -56,10 +76,10 @@ namespace PROG225_GnomesAndWarriors
         private void tmrHeartbeat_Tick(object sender, EventArgs e)
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
-
+            
         }
 
-        private Point GetMouseLocation()
+        public static Point GetMouseLocation()
         {
             return new Point(Cursor.Position.X, Cursor.Position.Y);
         }
@@ -75,7 +95,13 @@ namespace PROG225_GnomesAndWarriors
                     e.Graphics.DrawImage(p.Image, p.Left, p.Top, p.Width, p.Height);
                 }
 
-            if (MouseHeld) Player1.ChargeSpell(e, mouseHeldCounter);
+            if (mouseHeld == MouseHeld.Held) Player1.ChargeSpell(e, mouseHeldCounter);
+            else if (mouseHeld == MouseHeld.NotHeld)
+            {
+                Player1.ReleaseSpell();
+                mouseHeld = MouseHeld.NoSpell;
+            }
+            HeartbeatPaintEventHandler(e);
         }
 
         private void CheckKeyPress(KeyEventArgs e)
@@ -134,12 +160,12 @@ namespace PROG225_GnomesAndWarriors
 
         private void frmGameScreen_MouseDown(object sender, MouseEventArgs e)
         {
-            MouseHeld = true;
+            mouseHeld = MouseHeld.Held;
         }
 
         private void frmGameScreen_MouseUp(object sender, MouseEventArgs e)
         {
-            MouseHeld = false;
+            mouseHeld = MouseHeld.NotHeld;
         }
     }
 }
