@@ -12,6 +12,8 @@ namespace PROG225_GnomesAndWarriors
     {
         public enum ChargeLevel { Level1, Level2, Level3, Level4, Level5 };
 
+        public int Damage { get; set; }
+
         private ChargeLevel chargeLevel;
 
         private Point location { get; set; }
@@ -19,14 +21,14 @@ namespace PROG225_GnomesAndWarriors
 
         private decimal decay { get; set; }
 
-        private decimal ratioX;
-        private decimal ratioY;
+        private decimal speedRatioX;
+        private decimal speedRatioY;
 
 
         public Spell(ChargeLevel charge, Point mouseLocation, Point currentLocation)
         {
             chargeLevel = charge;
-            SetSpeedRatios();
+            SetSpellParameters();
 
             finalLocation = mouseLocation;
             location = currentLocation;
@@ -36,15 +38,15 @@ namespace PROG225_GnomesAndWarriors
             switch (diffX)
             {
                 case >= 0 and <100:
-                    ratioX = 0;
+                    speedRatioX = 0;
                     break;
 
                 case >= 101:
-                    ratioX = -ratioX;
+                    speedRatioX = -speedRatioX;
                     break;
 
                 case < 0 and > -100:
-                    ratioX = 0;
+                    speedRatioX = 0;
                     break;
 
                 case < -100:
@@ -56,15 +58,15 @@ namespace PROG225_GnomesAndWarriors
             switch (diffY)
             {
                 case >= 0 and < 100:
-                    ratioY = 0;
+                    speedRatioY = 0;
                     break;
 
                 case >= 101:
-                    ratioY = -ratioY;
+                    speedRatioY = -speedRatioY;
                     break;
 
                 case < 0 and > -100:
-                    ratioY = 0;
+                    speedRatioY = 0;
                     break;
 
                 case < -100:
@@ -75,33 +77,38 @@ namespace PROG225_GnomesAndWarriors
 
         }
 
-        private void SetSpeedRatios()
+        private void SetSpellParameters(int damage)
         {
             switch (chargeLevel)
             {
                 case ChargeLevel.Level1:
-                    ratioY = 5;
-                    ratioX = 5;
+                    speedRatioY = 5;
+                    speedRatioX = 5;
+                    Damage = damage / 5;
                     break;
 
                 case ChargeLevel.Level2:
-                    ratioY = 6;
-                    ratioX = 6;
+                    speedRatioY = 6;
+                    speedRatioX = 6;
+                    Damage = damage / 3;
                     break;
 
                 case ChargeLevel.Level3:
-                    ratioY = 8;
-                    ratioX = 8;
+                    speedRatioY = 8;
+                    speedRatioX = 8;
+                    Damage = damage / 2;
                     break;
 
                 case ChargeLevel.Level4:
-                    ratioY = 10;
-                    ratioX = 10;
+                    speedRatioY = 10;
+                    speedRatioX = 10;
+                    Damage = damage;
                     break;
 
                 case ChargeLevel.Level5:
-                    ratioY = 14;
-                    ratioX = 14;
+                    speedRatioY = 14;
+                    speedRatioX = 14;
+                    Damage = (int)(damage*1.5m);
                     break;
             }
         }
@@ -113,8 +120,8 @@ namespace PROG225_GnomesAndWarriors
             if (decay != 0)
             {
                 Point newLocation = new Point();
-                newLocation.X = (int)(location.X + ratioX);
-                newLocation.Y = (int)(location.Y + ratioY);
+                newLocation.X = (int)(location.X + speedRatioX);
+                newLocation.Y = (int)(location.Y + speedRatioY);
 
                 location = newLocation;
 
