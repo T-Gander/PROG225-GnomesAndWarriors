@@ -9,7 +9,7 @@ namespace PROG225_GnomesAndWarriors
     public class DinoDevil : Dino
     {
 
-        public DinoDevil(Dino dino) : base() 
+        public DinoDevil(Dino dino) : base() //Need to see if this works to inherit a constructor
         {
 
         }
