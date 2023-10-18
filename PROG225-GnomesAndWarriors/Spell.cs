@@ -28,7 +28,7 @@ namespace PROG225_GnomesAndWarriors
         public Spell(ChargeLevel charge, Point mouseLocation, Point currentLocation)
         {
             chargeLevel = charge;
-            SetSpellParameters();
+            SetSpellParameters(Damage);
 
             finalLocation = mouseLocation;
             location = currentLocation;
@@ -72,9 +72,6 @@ namespace PROG225_GnomesAndWarriors
                 case < -100:
                     break;
             }
-
-            decay = 1000;
-
         }
 
         private void SetSpellParameters(int damage)
@@ -84,30 +81,35 @@ namespace PROG225_GnomesAndWarriors
                 case ChargeLevel.Level1:
                     speedRatioY = 5;
                     speedRatioX = 5;
+                    decay = 10;
                     Damage = damage / 5;
                     break;
 
                 case ChargeLevel.Level2:
                     speedRatioY = 6;
                     speedRatioX = 6;
+                    decay = 20;
                     Damage = damage / 3;
                     break;
 
                 case ChargeLevel.Level3:
                     speedRatioY = 8;
                     speedRatioX = 8;
+                    decay = 40;
                     Damage = damage / 2;
                     break;
 
                 case ChargeLevel.Level4:
                     speedRatioY = 10;
                     speedRatioX = 10;
+                    decay = 60;
                     Damage = damage;
                     break;
 
                 case ChargeLevel.Level5:
                     speedRatioY = 14;
                     speedRatioX = 14;
+                    decay = 80;
                     Damage = (int)(damage*1.5m);
                     break;
             }
@@ -117,7 +119,7 @@ namespace PROG225_GnomesAndWarriors
         {
             Pen myPen = new Pen(Color.Blue, 1);
 
-            if (decay != 0)
+            if (decay > 0)
             {
                 Point newLocation = new Point();
                 newLocation.X = (int)(location.X + speedRatioX);
@@ -155,7 +157,6 @@ namespace PROG225_GnomesAndWarriors
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
             }
             else
             {

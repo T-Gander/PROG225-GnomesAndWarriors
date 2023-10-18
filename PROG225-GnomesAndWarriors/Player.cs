@@ -1,4 +1,5 @@
 ﻿using System;
+using PROG225_GnomesAndWarriors.Properties;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing.Imaging;
@@ -28,9 +29,9 @@ namespace PROG225_GnomesAndWarriors
 
         public Player()
         {
-            rightGifArray = GetFramesFromAnimatedGIF(Properties.Resources.Mage);
-            currentGifArray = GetFramesFromAnimatedGIF(Properties.Resources.Mage);
-            leftGifArray = GetFramesFromAnimatedGIF(Properties.Resources.MageFlipped);
+            rightGifArray = GetFramesFromAnimatedGIF(Resources.Mage);
+            currentGifArray = GetFramesFromAnimatedGIF(Resources.Mage);
+            leftGifArray = GetFramesFromAnimatedGIF(Resources.MageFlipped);
 
             level = 1;
             Health = 100;
@@ -42,7 +43,7 @@ namespace PROG225_GnomesAndWarriors
             PlayerPicture = new PictureBox
             {
                 Size = new Size(60, 80),
-                Image = Properties.Resources.Mage,
+                Image = Resources.Mage,
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Location = Location
             };

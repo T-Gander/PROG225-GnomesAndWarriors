@@ -13,6 +13,7 @@ namespace PROG225_GnomesAndWarriors
         public int Damage { get; set; }
         public int Agility { get; set; }
         public Point Location { get; set; }
+        public int Experience { get; set; }
 
         public virtual void Move()
         {

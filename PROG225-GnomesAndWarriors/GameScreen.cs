@@ -6,7 +6,7 @@ namespace PROG225_GnomesAndWarriors
 {
     public partial class frmGameScreen : Form
     {
-        private int gameLevel = 0;
+        public int GameLevel = 0;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
         private PaintEventArgs heartbeatArgs;
@@ -46,6 +46,8 @@ namespace PROG225_GnomesAndWarriors
 
             Heartbeat += Player1.Move;
             Heartbeat += Player1.UpdatePlayerPicture;
+
+
 
             Controls.Add(Player1.PlayerPicture);
         }

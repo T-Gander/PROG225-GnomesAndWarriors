@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PROG225_GnomesAndWarriors
 {
-    internal class Goblin : CharacterSheet
+    public class DinoDevil : Dino
     {
 
+        public DinoDevil(Dino dino) : base() 
+        {
 
-
+        }
     }
 }
