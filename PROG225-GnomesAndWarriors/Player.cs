@@ -136,32 +136,32 @@ namespace PROG225_GnomesAndWarriors
 
         public void ChargeSpell(PaintEventArgs e, int mouseHeldCounter)
         {
-            Pen myPen = new Pen(Color.Blue,1);
+            Brush myBrush = Brushes.LightBlue;
 
             switch (mouseHeldCounter)
             {
                 case <10:
-                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX, spellLocationY, 2, 2));
+                    e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX, spellLocationY, 2, 2));
                     currentCharge = Spell.ChargeLevel.Level1;
                     break;
 
                 case <20:
-                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 3, spellLocationY - 3, 5, 5));
+                    e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 3, spellLocationY - 3, 5, 5));
                     currentCharge = Spell.ChargeLevel.Level2;
                     break;
 
                 case <30:
-                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 6, spellLocationY - 6, 8, 8));
+                    e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 6, spellLocationY - 6, 8, 8));
                     currentCharge = Spell.ChargeLevel.Level3;
                     break;
 
                 case <40:
-                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
                     currentCharge = Spell.ChargeLevel.Level4;
                     break;
 
                 case > 40:
-                    e.Graphics.DrawEllipse(myPen, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
+                    e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
                     currentCharge = Spell.ChargeLevel.Level5;
                     break;
             }

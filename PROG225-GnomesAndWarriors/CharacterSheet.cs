@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PROG225_GnomesAndWarriors
 {
-    public class CharacterSheet
+    public class CharacterSheet //Should probly be an interface.
     {
         public int Health { get; set; }
         public int Damage { get; set; }

@@ -121,7 +121,7 @@ namespace PROG225_GnomesAndWarriors
 
         public void Move(PaintEventArgs e)
         {
-            Pen myPen = new Pen(Color.Blue, 1);
+            Brush myBrush = Brushes.LightBlue;
 
             if (decay > 0)
             {
@@ -136,27 +136,27 @@ namespace PROG225_GnomesAndWarriors
                     switch (chargeLevel)
                     {
                         case ChargeLevel.Level1:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X, location.Y, 2, 2));
+                            e.Graphics.FillEllipse(myBrush, new Rectangle(location.X, location.Y, 2, 2));
                             Bounds = new Rectangle(newLocation, new Size(2, 2));
                             break;
 
                         case ChargeLevel.Level2:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 3, location.Y - 3, 5, 5));
+                            e.Graphics.FillEllipse(myBrush, new Rectangle(location.X - 3, location.Y - 3, 5, 5));
                             Bounds = new Rectangle(newLocation, new Size(5, 5));
                             break;
 
                         case ChargeLevel.Level3:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 6, location.Y - 6, 8, 8));
+                            e.Graphics.FillEllipse(myBrush, new Rectangle(location.X - 6, location.Y - 6, 8, 8));
                             Bounds = new Rectangle(newLocation, new Size(8, 8));
                             break;
 
                         case ChargeLevel.Level4:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 13, location.Y - 13, 15, 15));
+                            e.Graphics.FillEllipse(myBrush, new Rectangle(location.X - 13, location.Y - 13, 15, 15));
                             Bounds = new Rectangle(newLocation, new Size(15, 15));
                             break;
 
                         case ChargeLevel.Level5:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 16, location.Y - 16, 18, 18));
+                            e.Graphics.FillEllipse(myBrush, new Rectangle(location.X - 16, location.Y - 16, 18, 18));
                             Bounds = new Rectangle(newLocation, new Size(18, 18));
                             break;
                     }
