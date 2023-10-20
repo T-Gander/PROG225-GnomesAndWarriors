@@ -129,6 +129,8 @@ namespace PROG225_GnomesAndWarriors
                 PlayerPicture.Image = Resources.Mage;
             }
 
+            UpdatePlayerPicture();
+
             PlayerPicture.Location = Location;
         }
 

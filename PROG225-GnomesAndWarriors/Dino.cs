@@ -23,6 +23,8 @@ namespace PROG225_GnomesAndWarriors
                 Location = Location
             };
 
+            Bounds = new Rectangle(EnemyPicture.Location,EnemyPicture.Size);
+
             Health = (int)(frmGameScreen.GameScreen.GameLevel * 1);
             Damage = (int)(frmGameScreen.GameScreen.GameLevel * 1);
             Experience = (int)(frmGameScreen.GameScreen.GameLevel * 1);

@@ -15,6 +15,8 @@ namespace PROG225_GnomesAndWarriors
         protected static int topSpawnArea = 200;
         protected static int bottomSpawnArea = frmGameScreen.GameScreen.Height-200;
 
+        public Rectangle Bounds { get; set; }
+
         private int xSpeed = 5;
         private int ySpeed = 5;
 
@@ -28,12 +30,19 @@ namespace PROG225_GnomesAndWarriors
             Location = newLocation;
             EnemyPicture.Location = newLocation;
             EnemyPicture.Invalidate();
+            Bounds = new Rectangle(newLocation, EnemyPicture.Size);
+        }
+
+        private void CheckHealth()
+        {
+            //Delete the dino if health is 0;
         }
 
         public override void Move()
         {
             CheckForCollisionWithGameBounds();
             UpdateEnemyPicture();
+            CheckHealth();
         }
 
         private void CheckForCollisionWithGameBounds()

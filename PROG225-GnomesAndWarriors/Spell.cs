@@ -11,6 +11,8 @@ namespace PROG225_GnomesAndWarriors
     public class Spell
     {
         public enum ChargeLevel { Level1, Level2, Level3, Level4, Level5 };
+        public static List<Spell> ActiveSpells = new List<Spell>();
+        public Rectangle Bounds;
 
         public int Damage { get; set; }
 
@@ -72,6 +74,8 @@ namespace PROG225_GnomesAndWarriors
                 case < -100:
                     break;
             }
+
+            ActiveSpells.Add(this);
         }
 
         private void SetSpellParameters(int damage)
@@ -133,22 +137,27 @@ namespace PROG225_GnomesAndWarriors
                     {
                         case ChargeLevel.Level1:
                             e.Graphics.DrawEllipse(myPen, new Rectangle(location.X, location.Y, 2, 2));
+                            Bounds = new Rectangle(newLocation, new Size(2, 2));
                             break;
 
                         case ChargeLevel.Level2:
                             e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 3, location.Y - 3, 5, 5));
+                            Bounds = new Rectangle(newLocation, new Size(5, 5));
                             break;
 
                         case ChargeLevel.Level3:
                             e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 6, location.Y - 6, 8, 8));
+                            Bounds = new Rectangle(newLocation, new Size(8, 8));
                             break;
 
                         case ChargeLevel.Level4:
                             e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 13, location.Y - 13, 15, 15));
+                            Bounds = new Rectangle(newLocation, new Size(15, 15));
                             break;
 
                         case ChargeLevel.Level5:
-                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 13, location.Y - 13, 15, 15));
+                            e.Graphics.DrawEllipse(myPen, new Rectangle(location.X - 16, location.Y - 16, 18, 18));
+                            Bounds = new Rectangle(newLocation, new Size(18, 18));
                             break;
                     }
                     decay -= 1;
@@ -160,8 +169,14 @@ namespace PROG225_GnomesAndWarriors
             }
             else
             {
-                frmGameScreen.GameScreen.HeartbeatPaintEvent -= this.Move;
+                DissolveSpell();
             }
+        }
+
+        public void DissolveSpell()
+        {
+            frmGameScreen.GameScreen.HeartbeatPaintEvent -= Move;
+            ActiveSpells.Remove(this);
         }
     }
 }

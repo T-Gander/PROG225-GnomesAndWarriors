@@ -12,6 +12,7 @@ namespace PROG225_GnomesAndWarriors
         private int mouseHeldCounter = 0;
         private PaintEventArgs heartbeatArgs;
         private int numberOfEnemiesToSpawn = 0;
+        private List<Enemy> enemies = new List<Enemy>();
 
 
         public bool UpPressed, DownPressed, LeftPressed, RightPressed;
@@ -47,7 +48,6 @@ namespace PROG225_GnomesAndWarriors
             Player1 = new Player();
 
             Heartbeat += Player1.Move;
-            Heartbeat += Player1.UpdatePlayerPicture;
 
             Controls.Add(Player1.PlayerPicture);
 
@@ -62,7 +62,23 @@ namespace PROG225_GnomesAndWarriors
             {
                 Dino newDino = new Dino(Enemy.Spawn());
                 Controls.Add(newDino.EnemyPicture);
+                enemies.Add(newDino);
             }
+        }
+
+        private void CheckForSpellCollision()
+        {
+            enemies.ForEach(enemy =>
+            {
+                Spell.ActiveSpells.ForEach(spell =>
+                {
+                    if (enemy.Bounds.IntersectsWith(spell.Bounds))
+                    {
+                        enemy.Health -= spell.Damage;
+                        spell.DissolveSpell();
+                    }
+                });
+            });
         }
 
         private void HeartbeatEventHandler()
@@ -92,6 +108,7 @@ namespace PROG225_GnomesAndWarriors
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
             gameTime++;
+
 
             if (gameTime % 200 == 0)
             {
