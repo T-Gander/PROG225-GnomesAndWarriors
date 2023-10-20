@@ -121,12 +121,12 @@ namespace PROG225_GnomesAndWarriors
             if (frmGameScreen.GameScreen.LeftPressed)
             {
                 Location = new Point(Location.X - Agility, Location.Y);
-                PlayerPicture.Image = Properties.Resources.MageFlipped;
+                PlayerPicture.Image = Resources.MageFlipped;
             }
             if (frmGameScreen.GameScreen.RightPressed)
             {
                 Location = new Point(Location.X + Agility, Location.Y);
-                PlayerPicture.Image = Properties.Resources.Mage;
+                PlayerPicture.Image = Resources.Mage;
             }
 
             PlayerPicture.Location = Location;

@@ -7,9 +7,11 @@ namespace PROG225_GnomesAndWarriors
     public partial class frmGameScreen : Form
     {
         public int GameLevel = 0;
+        private int gameTime = 0;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
         private PaintEventArgs heartbeatArgs;
+        private int numberOfEnemiesToSpawn = 0;
 
 
         public bool UpPressed, DownPressed, LeftPressed, RightPressed;
@@ -47,9 +49,20 @@ namespace PROG225_GnomesAndWarriors
             Heartbeat += Player1.Move;
             Heartbeat += Player1.UpdatePlayerPicture;
 
-
-
             Controls.Add(Player1.PlayerPicture);
+
+            NewLevel();
+        }
+
+        private void NewLevel()
+        {
+            numberOfEnemiesToSpawn = gameTime;
+
+            for(int i = 0; i < 10; i++)
+            {
+                Dino newDino = new Dino(Enemy.Spawn());
+                Controls.Add(newDino.EnemyPicture);
+            }
         }
 
         private void HeartbeatEventHandler()
@@ -78,7 +91,13 @@ namespace PROG225_GnomesAndWarriors
         private void tmrHeartbeat_Tick(object sender, EventArgs e)
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
-            
+            gameTime++;
+
+            if (gameTime % 200 == 0)
+            {
+                NewLevel();
+                GameLevel++;
+            }
         }
 
         public static Point GetMouseLocation()

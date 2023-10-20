@@ -9,8 +9,9 @@ namespace PROG225_GnomesAndWarriors
 {
     public class Dino : Enemy
     {
-        public Dino()
+        public Dino(Point SpawnLocation)
         {
+            currentImageArray = new Image[] { Resources.DinoBase };
             leftImageArray = new Image[] { Resources.DinoBaseFlipped };
             rightImageArray = new Image[] { Resources.DinoBase };
 
@@ -22,28 +23,20 @@ namespace PROG225_GnomesAndWarriors
                 Location = Location
             };
 
-            Health = (int)(frmGameScreen.GameScreen.GameLevel * 0.1m);
-            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 0.1m);
-            Experience = (int)(frmGameScreen.GameScreen.GameLevel * 0.1m);
+            Health = (int)(frmGameScreen.GameScreen.GameLevel * 1);
+            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 1);
+            Experience = (int)(frmGameScreen.GameScreen.GameLevel * 1);
+            Location = SpawnLocation;
 
-            EnemyList.Add(this);
-            RefreshEnemyHeartbeats();
-        }
-
-        public void UpdateEnemyPicture()
-        {
-            if (pictureIndex == 6) pictureIndex = 0;
-
-            if (frmGameScreen.GameScreen.LeftPressed) currentImageArray = leftImageArray;
-            else if (frmGameScreen.GameScreen.RightPressed) currentImageArray = rightImageArray;
-
-            EnemyPicture.Image = currentImageArray[pictureIndex];
-            EnemyPicture.Invalidate();
+            frmGameScreen.GameScreen.Heartbeat += Move;
         }
 
         private DinoDevil Evolve()
         {
             return new DinoDevil(this);
         }
+
+        
+
     }
 }

@@ -10,18 +10,124 @@ namespace PROG225_GnomesAndWarriors
     {
         public PictureBox EnemyPicture { get; set; }
 
-        public static List<Enemy> EnemyList { get; set; } = new List<Enemy>();
+        protected static int leftSpawnArea = 200;
+        protected static int rightSpawnArea = frmGameScreen.GameScreen.Width-200;
+        protected static int topSpawnArea = 200;
+        protected static int bottomSpawnArea = frmGameScreen.GameScreen.Height-200;
 
-        public static void RefreshEnemyHeartbeats()
-        {
-            EnemyList.ForEach(enemy =>
-            {
-                frmGameScreen.GameScreen.Heartbeat -= enemy.Move;   //removes all heartbeats except the ones that don't exist.
-                frmGameScreen.GameScreen.Heartbeat += enemy.Move;   //adds all of the existing enemys heartbeats.
-            });
-        }
+        private int xSpeed = 5;
+        private int ySpeed = 5;
 
         protected int pictureIndex = 0;
         protected Image[] leftImageArray, rightImageArray, currentImageArray;
+
+        public void UpdateEnemyPicture()
+        {
+            Point newLocation = new Point(Location.X + xSpeed, Location.Y + ySpeed);
+            EnemyPicture.Image = currentImageArray[pictureIndex];
+            Location = newLocation;
+            EnemyPicture.Location = newLocation;
+            EnemyPicture.Invalidate();
+        }
+
+        public override void Move()
+        {
+            CheckForCollisionWithGameBounds();
+            UpdateEnemyPicture();
+        }
+
+        private void CheckForCollisionWithGameBounds()
+        {
+            if (Location.X + EnemyPicture.Width >= frmGameScreen.GameScreen.Width)
+            {
+                Point newPoint = new Point(Location.X - 5, Location.Y);
+                Location = newPoint;
+                EnemyPicture.Location = newPoint;
+                xSpeed *= -1;
+                currentImageArray = leftImageArray;
+            }
+            if (Location.X <= 0)
+            {
+                Point newPoint = new Point(Location.X + 5, Location.Y);
+                Location = newPoint;
+                EnemyPicture.Location = newPoint;
+                xSpeed *= -1;
+                currentImageArray = rightImageArray;
+            }
+            if (Location.Y <= 0)
+            {
+                Point newPoint = new Point(Location.X, Location.Y+5);
+                Location = newPoint;
+                EnemyPicture.Location = newPoint;
+                ySpeed *= -1;
+            }
+            if (Location.Y + EnemyPicture.Height >= frmGameScreen.GameScreen.Height)
+            {
+                Point newPoint = new Point(Location.X, Location.Y - 5);
+                Location = newPoint;
+                EnemyPicture.Location = newPoint;
+                ySpeed *= -1;
+            }
+        }
+
+        public static Point Spawn()
+        {
+            Random coinflip = new Random();
+
+            int xLocation = 0;
+            int yLocation = 0;
+
+            bool left = false;
+            bool right = false;
+            bool up = false;
+            bool down = false;
+
+            for (int i = 0; i < 4;  i++)
+            {
+                bool flipResult = false;
+                int result = coinflip.Next(2);
+
+                if(result > 0)
+                {
+                    flipResult = true;
+                }
+
+                switch (i)
+                {
+                    case 0:
+                        left = flipResult; break;
+
+                    case 1:
+                        right = flipResult; break;
+
+                    case 2:
+                        up = flipResult; break;
+
+                    case 3: 
+                        down = flipResult; break;
+                }
+            }
+
+            Random randLocation = new Random();
+
+            if (left)
+            {
+                xLocation = randLocation.Next(1,leftSpawnArea);
+            }
+            if(right)
+            {
+                xLocation = randLocation.Next(rightSpawnArea);
+            }
+            if(up)
+            {
+                yLocation = randLocation.Next(1,topSpawnArea);
+            }
+            if(down)
+            {
+                yLocation = randLocation.Next(bottomSpawnArea);
+            }
+
+            return new Point(xLocation,yLocation);
+        }
     }
 }
