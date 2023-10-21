@@ -20,6 +20,7 @@ namespace PROG225_GnomesAndWarriors
         private int spellLocationY;
         private const int SPELLOFFSETRIGHT = 68;
         private const int SPELLOFFSETLEFT = 0;
+        private int experienceCap = 1;
         private Spell.ChargeLevel currentCharge;
 
         private int level;
@@ -33,10 +34,12 @@ namespace PROG225_GnomesAndWarriors
             currentGifArray = GetFramesFromAnimatedGIF(Resources.Mage);
             leftGifArray = GetFramesFromAnimatedGIF(Resources.MageFlipped);
 
+            Experience = 0;
+
             level = 1;
             Health = 100;
             Damage = 5;
-            Agility = 5;
+            Agility = 7;
             
             Location = new Point(frmGameScreen.MyScreen.Bounds.Width / 2, frmGameScreen.MyScreen.Bounds.Height / 2);
 
@@ -52,9 +55,18 @@ namespace PROG225_GnomesAndWarriors
             spellLocationY = Location.Y + SPELLOFFSETRIGHT;
         }
 
-        public static void LevelUp()
+        public void CheckLevelUp()
         {
+            if(Experience == experienceCap)
+            {
+                level++;
+                Health = (int)(Health * 1.2);
+                Damage = (int)(Damage * 1.2);
+                Agility = (int)(Agility * 1.2);
 
+                Experience = 0;
+                experienceCap = (int)(experienceCap * 1.2);
+            }
         }
 
         public static Image[] GetFramesFromAnimatedGIF(Image IMG)       //Borrowed from stack overflow
@@ -130,6 +142,7 @@ namespace PROG225_GnomesAndWarriors
             }
 
             UpdatePlayerPicture();
+            CheckLevelUp();
 
             PlayerPicture.Location = Location;
         }

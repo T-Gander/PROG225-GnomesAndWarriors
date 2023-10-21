@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,28 @@ namespace PROG225_GnomesAndWarriors
 
         }
 
-        public virtual void Die()
+        public virtual void Die(CharacterSheet cs)
         {
-
+            if(cs.GetType() == typeof(Dino))                    //instead of if, I should override the die method in each class?.
+            {
+                Dino dino = (Dino)cs;
+                frmGameScreen.GameScreen.Player1.Experience += dino.Experience;
+                frmGameScreen.GameScreen.Score += 1;
+                frmGameScreen.GameScreen.Heartbeat -= dino.Move;
+                frmGameScreen.GameScreen.Controls.Remove(dino.EnemyPicture);
+            }
+            else if(cs.GetType() == typeof(DinoDevil))
+            {
+                DinoDevil dino = (DinoDevil)cs;
+                frmGameScreen.GameScreen.Player1.Experience += dino.Experience;
+                frmGameScreen.GameScreen.Score += 5;
+                frmGameScreen.GameScreen.Heartbeat -= dino.Move;
+                frmGameScreen.GameScreen.Controls.Remove(dino.EnemyPicture);
+            }
+            else if(cs.GetType() == typeof(Player))
+            {
+                frmGameScreen.GameScreen.Heartbeat -= cs.Move;
+            }
         }
     }
 }

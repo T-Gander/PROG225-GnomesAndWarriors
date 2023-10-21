@@ -9,11 +9,14 @@ namespace PROG225_GnomesAndWarriors
 {
     public class Dino : Enemy
     {
+        protected Image[] enemyImageRight = { Resources.DinoBase };
+        protected Image[] enemyImageLeft = { Resources.DinoBaseFlipped };
+
         public Dino(Point SpawnLocation)
         {
-            currentImageArray = new Image[] { Resources.DinoBase };
-            leftImageArray = new Image[] { Resources.DinoBaseFlipped };
-            rightImageArray = new Image[] { Resources.DinoBase };
+            currentImageArray = enemyImageRight;
+            leftImageArray = enemyImageLeft;
+            rightImageArray = enemyImageRight;
 
             EnemyPicture = new PictureBox
             {
@@ -31,6 +34,8 @@ namespace PROG225_GnomesAndWarriors
             Location = SpawnLocation;
 
             frmGameScreen.GameScreen.Heartbeat += Move;
+            frmGameScreen.GameScreen.Heartbeat += CheckDinoEvolution;
+
         }
 
         private DinoDevil Evolve()
@@ -38,7 +43,16 @@ namespace PROG225_GnomesAndWarriors
             return new DinoDevil(this);
         }
 
-        
+        private void CheckDinoEvolution()
+        {
+            if (Experience > 5)
+            {
+                frmGameScreen.GameScreen.Heartbeat -= CheckDinoEvolution;
+                Evolve();
+            }
+        }
+
+
 
     }
 }

@@ -6,14 +6,14 @@ namespace PROG225_GnomesAndWarriors
 {
     public partial class frmGameScreen : Form
     {
-        public int GameLevel = 0;
+        public int GameLevel = 1;
         private int gameTime = 0;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
         private PaintEventArgs heartbeatArgs;
         private int numberOfEnemiesToSpawn = 0;
         private List<Enemy> enemies = new List<Enemy>();
-
+        public int Score = 0;
 
         public bool UpPressed, DownPressed, LeftPressed, RightPressed;
 
@@ -108,7 +108,6 @@ namespace PROG225_GnomesAndWarriors
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
             gameTime++;
-
 
             if (gameTime % 200 == 0)
             {

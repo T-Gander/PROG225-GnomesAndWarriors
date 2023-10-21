@@ -35,13 +35,30 @@ namespace PROG225_GnomesAndWarriors
 
         private void CheckHealth()
         {
-            //Delete the dino if health is 0;
+            if (Health <= 0)
+            {
+                Die(this);
+            }
         }
+
+        
 
         public override void Move()
         {
             CheckForCollisionWithGameBounds();
             UpdateEnemyPicture();
+
+            for(int i = 0; i < Spell.ActiveSpells.Count; i++)
+            {
+                Spell spell = Spell.ActiveSpells[i];
+
+                if (Bounds.IntersectsWith(spell.Bounds))
+                {
+                    Health -= spell.Damage;
+                    spell.DissolveSpell();
+                    i = -1;
+                }
+            }
             CheckHealth();
         }
 

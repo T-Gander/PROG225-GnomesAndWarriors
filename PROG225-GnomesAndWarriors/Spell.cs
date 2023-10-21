@@ -14,7 +14,7 @@ namespace PROG225_GnomesAndWarriors
         public static List<Spell> ActiveSpells = new List<Spell>();
         public Rectangle Bounds;
 
-        public int Damage { get; set; }
+        public int Damage { get; set; } = 5;
 
         private ChargeLevel chargeLevel;
 
