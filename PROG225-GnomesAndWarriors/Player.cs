@@ -20,10 +20,10 @@ namespace PROG225_GnomesAndWarriors
         private int spellLocationY;
         private const int SPELLOFFSETRIGHT = 68;
         private const int SPELLOFFSETLEFT = 0;
-        private int experienceCap = 1;
+        private int experienceCap = 10;
         private Spell.ChargeLevel currentCharge;
 
-        private int level;
+        public int Level;
 
         public PictureBox PlayerPicture { get; set; }
         private Image[] rightGifArray, leftGifArray, currentGifArray;
@@ -36,9 +36,9 @@ namespace PROG225_GnomesAndWarriors
 
             Experience = 0;
 
-            level = 1;
+            Level = 1;
             Health = 100;
-            Damage = 5;
+            Damage = 1;
             Agility = 7;
             
             Location = new Point(frmGameScreen.MyScreen.Bounds.Width / 2, frmGameScreen.MyScreen.Bounds.Height / 2);
@@ -59,13 +59,12 @@ namespace PROG225_GnomesAndWarriors
         {
             if(Experience == experienceCap)
             {
-                level++;
+                Level++;
                 Health = (int)(Health * 1.2);
-                Damage = (int)(Damage * 1.2);
-                Agility = (int)(Agility * 1.2);
+                Damage *= 2;
 
                 Experience = 0;
-                experienceCap = (int)(experienceCap * 1.2);
+                experienceCap = (int)(experienceCap * 2);
             }
         }
 
@@ -153,27 +152,27 @@ namespace PROG225_GnomesAndWarriors
 
             switch (mouseHeldCounter)
             {
-                case <10:
+                case <5:
                     e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX, spellLocationY, 2, 2));
                     currentCharge = Spell.ChargeLevel.Level1;
                     break;
 
-                case <20:
+                case <10:
                     e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 3, spellLocationY - 3, 5, 5));
                     currentCharge = Spell.ChargeLevel.Level2;
                     break;
 
-                case <30:
+                case <15:
                     e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 6, spellLocationY - 6, 8, 8));
                     currentCharge = Spell.ChargeLevel.Level3;
                     break;
 
-                case <40:
+                case <20:
                     e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
                     currentCharge = Spell.ChargeLevel.Level4;
                     break;
 
-                case > 40:
+                case >25:
                     e.Graphics.FillEllipse(myBrush, new Rectangle(spellLocationX - 13, spellLocationY - 13, 15, 15));
                     currentCharge = Spell.ChargeLevel.Level5;
                     break;

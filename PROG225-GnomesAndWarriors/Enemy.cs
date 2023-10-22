@@ -41,8 +41,6 @@ namespace PROG225_GnomesAndWarriors
             }
         }
 
-        
-
         public override void Move()
         {
             CheckForCollisionWithGameBounds();
@@ -55,8 +53,15 @@ namespace PROG225_GnomesAndWarriors
                 if (Bounds.IntersectsWith(spell.Bounds))
                 {
                     Health -= spell.Damage;
-                    spell.DissolveSpell();
-                    i = -1;
+                    if(spell.Decay == 0 || spell.Damage == 0)
+                    {
+                        spell.DissolveSpell();
+                        i = -1;
+                    }
+                    else
+                    {
+                        spell.Damage -= 1;
+                    }
                 }
             }
             CheckHealth();

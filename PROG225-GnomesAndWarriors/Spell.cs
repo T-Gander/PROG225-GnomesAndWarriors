@@ -14,14 +14,14 @@ namespace PROG225_GnomesAndWarriors
         public static List<Spell> ActiveSpells = new List<Spell>();
         public Rectangle Bounds;
 
-        public int Damage { get; set; } = 5;
+        public int Damage { get; set; } = frmGameScreen.GameScreen.Player1.Damage;
 
         private ChargeLevel chargeLevel;
 
         private Point location { get; set; }
         private Point finalLocation { get; set; }
 
-        private decimal decay { get; set; }
+        public decimal Decay { get; set; }
 
         private decimal speedRatioX;
         private decimal speedRatioY;
@@ -85,35 +85,35 @@ namespace PROG225_GnomesAndWarriors
                 case ChargeLevel.Level1:
                     speedRatioY = 5;
                     speedRatioX = 5;
-                    decay = 10;
+                    Decay = 10;
                     Damage = damage / 5;
                     break;
 
                 case ChargeLevel.Level2:
                     speedRatioY = 6;
                     speedRatioX = 6;
-                    decay = 20;
+                    Decay = 20;
                     Damage = damage / 3;
                     break;
 
                 case ChargeLevel.Level3:
                     speedRatioY = 8;
                     speedRatioX = 8;
-                    decay = 40;
+                    Decay = 40;
                     Damage = damage / 2;
                     break;
 
                 case ChargeLevel.Level4:
                     speedRatioY = 10;
                     speedRatioX = 10;
-                    decay = 60;
+                    Decay = 60;
                     Damage = damage;
                     break;
 
                 case ChargeLevel.Level5:
                     speedRatioY = 14;
                     speedRatioX = 14;
-                    decay = 80;
+                    Decay = 80;
                     Damage = (int)(damage*1.5m);
                     break;
             }
@@ -123,7 +123,7 @@ namespace PROG225_GnomesAndWarriors
         {
             Brush myBrush = Brushes.LightBlue;
 
-            if (decay > 0)
+            if (Decay > 0)
             {
                 Point newLocation = new Point();
                 newLocation.X = (int)(location.X + speedRatioX);
@@ -160,7 +160,7 @@ namespace PROG225_GnomesAndWarriors
                             Bounds = new Rectangle(newLocation, new Size(18, 18));
                             break;
                     }
-                    decay -= 1;
+                    Decay -= 1;
                 }
                 catch (Exception ex)
                 {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PROG225_GnomesAndWarriors
 {
@@ -14,45 +15,54 @@ namespace PROG225_GnomesAndWarriors
 
         public Dino(Point SpawnLocation)
         {
-            currentImageArray = enemyImageRight;
-            leftImageArray = enemyImageLeft;
-            rightImageArray = enemyImageRight;
-
-            EnemyPicture = new PictureBox
-            {
-                Size = new Size(60, 80),
-                Image = Resources.DinoBase,
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Location = Location
-            };
-
-            Bounds = new Rectangle(EnemyPicture.Location,EnemyPicture.Size);
-
-            Health = (int)(frmGameScreen.GameScreen.GameLevel * 1);
-            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 1);
+            Health = (int)(frmGameScreen.GameScreen.GameLevel * 1.2);
+            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 1.1);
             Experience = (int)(frmGameScreen.GameScreen.GameLevel * 1);
             Location = SpawnLocation;
 
-            frmGameScreen.GameScreen.Heartbeat += Move;
-            frmGameScreen.GameScreen.Heartbeat += CheckDinoEvolution;
-
-        }
-
-        private DinoDevil Evolve()
-        {
-            return new DinoDevil(this);
-        }
-
-        private void CheckDinoEvolution()
-        {
-            if (Experience > 5)
+            switch (Experience)
             {
-                frmGameScreen.GameScreen.Heartbeat -= CheckDinoEvolution;
-                Evolve();
+                case < 5:
+                    EnemyPicture = new PictureBox
+                    {
+                        Size = new Size(60, 80),
+                        Image = Resources.DinoBase,
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = Location
+                    };
+                    break;
+
+                case < 10:
+                    EnemyPicture = new PictureBox
+                    {
+                        Size = new Size(72, 96),
+                        Image = Resources.DinoBase,
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = Location
+                    };
+                    enemyImageRight = new Image[] { Resources.DinoDevil };
+                    enemyImageLeft = new Image[] { Resources.DinoDevilFlipped };
+                    break;
+
+                default:
+                    EnemyPicture = new PictureBox
+                    {
+                        Size = new Size(100, 120),
+                        Image = Resources.DinoBase,
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = Location
+                    };
+                    enemyImageRight = new Image[] { Resources.DinoGod };
+                    enemyImageLeft = new Image[] { Resources.DinoGodFlipped };
+                    break;
             }
+            
+            currentImageArray = enemyImageRight;
+            leftImageArray = enemyImageLeft;
+            rightImageArray = enemyImageRight;
+            
+            Bounds = new Rectangle(EnemyPicture.Location, EnemyPicture.Size);
+            frmGameScreen.GameScreen.Heartbeat += Move;
         }
-
-
-
     }
 }

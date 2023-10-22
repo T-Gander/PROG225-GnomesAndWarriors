@@ -7,6 +7,7 @@ namespace PROG225_GnomesAndWarriors
     public partial class frmGameScreen : Form
     {
         public int GameLevel = 1;
+        public Player Player1;
         private int gameTime = 0;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
@@ -14,25 +15,21 @@ namespace PROG225_GnomesAndWarriors
         private int numberOfEnemiesToSpawn = 0;
         private List<Enemy> enemies = new List<Enemy>();
         public int Score = 0;
-
         public bool UpPressed, DownPressed, LeftPressed, RightPressed;
 
         public enum MouseHeld { Held, NotHeld, NoSpell }
-
         private MouseHeld mouseHeld = MouseHeld.NoSpell;
 
         public static string GameDirectory = Environment.CurrentDirectory;
-
-        public Player Player1;
         public static frmGameScreen GameScreen;
-
         public static Screen MyScreen = Screen.PrimaryScreen;
 
         public delegate void TimerEvent();
         public delegate void PaintTimerEvent(PaintEventArgs e);
-
         public event TimerEvent Heartbeat;
         public event PaintTimerEvent HeartbeatPaintEvent;
+
+        private Label lblScore;
 
         public frmGameScreen()
         {
@@ -46,9 +43,23 @@ namespace PROG225_GnomesAndWarriors
             tmrHeartbeat.Interval = 25;
 
             Player1 = new Player();
-
             Heartbeat += Player1.Move;
 
+            //Need a health bar and charge level.
+            //Also need a player level indicator.
+            //Need powerups.
+            //
+
+            lblScore = new Label()
+            {
+                Size = new Size(350, 40),
+                ForeColor = Color.Red,
+                Font = new Font(FontFamily.GenericMonospace, 30),
+                Text = $"Score: {Score}",
+                BackColor = Color.Transparent
+            };
+
+            Controls.Add(lblScore);
             Controls.Add(Player1.PlayerPicture);
 
             NewLevel();
@@ -64,21 +75,6 @@ namespace PROG225_GnomesAndWarriors
                 Controls.Add(newDino.EnemyPicture);
                 enemies.Add(newDino);
             }
-        }
-
-        private void CheckForSpellCollision()
-        {
-            enemies.ForEach(enemy =>
-            {
-                Spell.ActiveSpells.ForEach(spell =>
-                {
-                    if (enemy.Bounds.IntersectsWith(spell.Bounds))
-                    {
-                        enemy.Health -= spell.Damage;
-                        spell.DissolveSpell();
-                    }
-                });
-            });
         }
 
         private void HeartbeatEventHandler()
@@ -113,6 +109,12 @@ namespace PROG225_GnomesAndWarriors
             {
                 NewLevel();
                 GameLevel++;
+            }
+
+            if(lblScore != null)
+            {
+                lblScore.Text = $"Score: {Score}";
+                lblScore.Location = new Point((GameScreen.Width/2) - (lblScore.Width/2) , 100);
             }
         }
 
