@@ -73,6 +73,34 @@ namespace PROG225_GnomesAndWarriors
             Bounds = new Rectangle(Location, new Size(45,60));
         }
 
+        public void CheckForCollisionWithGameBounds()
+        {
+            if (Location.X + PlayerPicture.Width >= frmGameScreen.GameScreen.Width)
+            {
+                Point newPoint = new Point(Location.X - Agility, Location.Y);
+                Location = newPoint;
+                PlayerPicture.Location = newPoint;
+            }
+            if (Location.X <= 0)
+            {
+                Point newPoint = new Point(Location.X + Agility, Location.Y);
+                Location = newPoint;
+                PlayerPicture.Location = newPoint;
+            }
+            if (Location.Y <= 0)
+            {
+                Point newPoint = new Point(Location.X, Location.Y + Agility);
+                Location = newPoint;
+                PlayerPicture.Location = newPoint;
+            }
+            if (Location.Y + PlayerPicture.Height >= frmGameScreen.GameScreen.Height)
+            {
+                Point newPoint = new Point(Location.X, Location.Y - Agility);
+                Location = newPoint;
+                PlayerPicture.Location = newPoint;
+            }
+        }
+
         public void CheckLevelUp()
         {
             if(Experience >= experienceCap)

@@ -130,6 +130,7 @@ namespace PROG225_GnomesAndWarriors
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
             CheckForPlayerEnemyCollision();
             CheckForPlayerVialCollision();
+            Player1.CheckForCollisionWithGameBounds();
             gameTime++;
 
             Debug.WriteLine(Player1.Bounds.ToString());
@@ -180,7 +181,7 @@ namespace PROG225_GnomesAndWarriors
                 }
             }
 
-            if (Player1.LevelingUp && !Player1.PickedUpVial)
+            if (Player1.LevelingUp)
             {
                 lblLevelUp.Text = $"Level Up! Level: {Player1.Level}!";
                 lblLevelUp.Show();
