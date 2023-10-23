@@ -22,8 +22,14 @@ namespace PROG225_GnomesAndWarriors
         private const int SPELLOFFSETLEFT = 0;
         private int experienceCap = 10;
         private Spell.ChargeLevel currentCharge;
+        private int invulnerableCounter = 100;
 
+        public ProgressBar HealthBar = new ProgressBar();
+        public Rectangle Bounds { get; set; }
         public int Level;
+        public bool Invulnerable = false;
+        public bool PickedUpVial = false;
+        public bool LevelingUp = false;
 
         public PictureBox PlayerPicture { get; set; }
         private Image[] rightGifArray, leftGifArray, currentGifArray;
@@ -37,7 +43,8 @@ namespace PROG225_GnomesAndWarriors
             Experience = 0;
 
             Level = 1;
-            Health = 100;
+            MaxHealth = 100;
+            Health = MaxHealth;
             Damage = 1;
             Agility = 7;
             
@@ -51,16 +58,31 @@ namespace PROG225_GnomesAndWarriors
                 Location = Location
             };
 
+            HealthBar = new ProgressBar()
+            {
+                Maximum = MaxHealth,
+                Value = Health,
+                Location = new Point(PlayerPicture.Location.X, PlayerPicture.Location.Y + 90),
+                Width = PlayerPicture.Width,
+                Height = 10
+            };
+
             spellLocationX = Location.X + SPELLOFFSETRIGHT;
             spellLocationY = Location.Y + SPELLOFFSETRIGHT;
+
+            Bounds = new Rectangle(Location, new Size(45,60));
         }
 
         public void CheckLevelUp()
         {
-            if(Experience == experienceCap)
+            if(Experience >= experienceCap)
             {
+                LevelingUp = true;
                 Level++;
-                Health = (int)(Health * 1.2);
+                MaxHealth = (int)(MaxHealth * 1.2);
+                Health = MaxHealth;
+                HealthBar.Maximum = MaxHealth;
+                HealthBar.Value = Health;
                 Damage *= 2;
 
                 Experience = 0;
@@ -114,8 +136,6 @@ namespace PROG225_GnomesAndWarriors
                 currentWaitFrame++;
             }
 
-            //Code to update spell location
-
             PlayerPicture.Invalidate();
         }
 
@@ -140,10 +160,21 @@ namespace PROG225_GnomesAndWarriors
                 PlayerPicture.Image = Resources.Mage;
             }
 
+            if (Invulnerable)
+            {
+                if (invulnerableCounter != 0) invulnerableCounter--;
+                else
+                {
+                    invulnerableCounter = 100;
+                    Invulnerable = false;
+                }
+            }
+
             UpdatePlayerPicture();
             CheckLevelUp();
 
             PlayerPicture.Location = Location;
+            Bounds = new Rectangle(Location, new Size(45, 60));
         }
 
         public void ChargeSpell(PaintEventArgs e, int mouseHeldCounter)

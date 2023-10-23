@@ -16,7 +16,7 @@ namespace PROG225_GnomesAndWarriors
         public Dino(Point SpawnLocation)
         {
             Health = (int)(frmGameScreen.GameScreen.GameLevel * 1.2);
-            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 1.1);
+            Damage = (int)(frmGameScreen.GameScreen.GameLevel * 10);
             Experience = (int)(frmGameScreen.GameScreen.GameLevel * 1);
             Location = SpawnLocation;
 
@@ -61,7 +61,7 @@ namespace PROG225_GnomesAndWarriors
             leftImageArray = enemyImageLeft;
             rightImageArray = enemyImageRight;
             
-            Bounds = new Rectangle(EnemyPicture.Location, EnemyPicture.Size);
+            Bounds = new Rectangle(EnemyPicture.Location, new Size(40, 60));
             frmGameScreen.GameScreen.Heartbeat += Move;
         }
     }

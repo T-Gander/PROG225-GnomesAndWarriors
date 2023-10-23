@@ -136,10 +136,16 @@
   <data name="DinoGodFlipped" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\CharacterAssets\DinoGodFlipped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HealthPotionSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\CharacterAssets\HealthPotionSmall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Mage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\CharacterAssets\mage.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MageFlipped" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\CharacterAssets\MageFlipped.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PowerPotionSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\CharacterAssets\PowerPotionSmall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

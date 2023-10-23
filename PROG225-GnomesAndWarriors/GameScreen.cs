@@ -1,5 +1,6 @@
 using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
+using System.Numerics;
 using System.Threading;
 
 namespace PROG225_GnomesAndWarriors
@@ -9,15 +10,20 @@ namespace PROG225_GnomesAndWarriors
         public int GameLevel = 1;
         public Player Player1;
         private int gameTime = 0;
+        private int pickupCount = 100;
+        public int LevelUpCount = 100;
         private Point mouseLocation;
         private int mouseHeldCounter = 0;
         private PaintEventArgs heartbeatArgs;
         private int numberOfEnemiesToSpawn = 0;
         private List<Enemy> enemies = new List<Enemy>();
+        private List<PowerVial> powerVials = new List<PowerVial>();
+        private List<HealthVial> healthVials = new List<HealthVial>();
+
         public int Score = 0;
         public bool UpPressed, DownPressed, LeftPressed, RightPressed;
-
         public enum MouseHeld { Held, NotHeld, NoSpell }
+
         private MouseHeld mouseHeld = MouseHeld.NoSpell;
 
         public static string GameDirectory = Environment.CurrentDirectory;
@@ -30,6 +36,8 @@ namespace PROG225_GnomesAndWarriors
         public event PaintTimerEvent HeartbeatPaintEvent;
 
         private Label lblScore;
+        private Label lblPowerUp;
+        public Label lblLevelUp;
 
         public frmGameScreen()
         {
@@ -45,11 +53,6 @@ namespace PROG225_GnomesAndWarriors
             Player1 = new Player();
             Heartbeat += Player1.Move;
 
-            //Need a health bar and charge level.
-            //Also need a player level indicator.
-            //Need powerups.
-            //
-
             lblScore = new Label()
             {
                 Size = new Size(350, 40),
@@ -59,17 +62,39 @@ namespace PROG225_GnomesAndWarriors
                 BackColor = Color.Transparent
             };
 
+            lblPowerUp = new Label()
+            {
+                Size = new Size(1200, 60),
+                ForeColor = Color.Red,
+                Font = new Font(FontFamily.GenericMonospace, 50),
+                BackColor = Color.Transparent,
+                Location = new Point((GameScreen.Width / 2) - (lblScore.Width / 2), 500)
+            };
+
+            lblLevelUp = new Label()
+            {
+                Size = new Size(1200, 60),
+                ForeColor = Color.Red,
+                Font = new Font(FontFamily.GenericMonospace, 50),
+                BackColor = Color.Transparent,
+                Location = new Point((GameScreen.Width / 2) - (lblScore.Width / 2), 500)
+            };
+
             Controls.Add(lblScore);
             Controls.Add(Player1.PlayerPicture);
+            Controls.Add(lblPowerUp);
+            Controls.Add(lblLevelUp);
+            lblPowerUp.Visible = false;
+            lblLevelUp.Visible = false;
 
             NewLevel();
         }
 
         private void NewLevel()
         {
-            numberOfEnemiesToSpawn = gameTime;
+            numberOfEnemiesToSpawn = gameTime/100;
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < numberOfEnemiesToSpawn; i++)
             {
                 Dino newDino = new Dino(Enemy.Spawn());
                 Controls.Add(newDino.EnemyPicture);
@@ -103,7 +128,11 @@ namespace PROG225_GnomesAndWarriors
         private void tmrHeartbeat_Tick(object sender, EventArgs e)
         {
             HeartbeatEventHandler();    //Everything that lives needs to perform an action.
+            CheckForPlayerEnemyCollision();
+            CheckForPlayerVialCollision();
             gameTime++;
+
+            Debug.WriteLine(Player1.Bounds.ToString());
 
             if (gameTime % 200 == 0)
             {
@@ -111,10 +140,58 @@ namespace PROG225_GnomesAndWarriors
                 GameLevel++;
             }
 
-            if(lblScore != null)
+            if (gameTime % 400 == 0)
+            {
+                PowerVial pv = new PowerVial();
+                IVial ivial = pv;
+                powerVials.Add(pv);
+                Controls.Add(ivial.VialPicture);
+            }
+
+            if (gameTime % 800 == 0)
+            {
+                HealthVial hv = new HealthVial();
+                IVial ivial = hv;
+                healthVials.Add(hv);
+                Controls.Add(ivial.VialPicture);
+            }
+
+            if (lblScore != null)
             {
                 lblScore.Text = $"Score: {Score}";
-                lblScore.Location = new Point((GameScreen.Width/2) - (lblScore.Width/2) , 100);
+                lblScore.Location = new Point((GameScreen.Width / 2) - (lblScore.Width / 2), 100);
+            }
+
+            Controls.Remove(Player1.HealthBar);
+            Player1.HealthBar.Location = new Point(Player1.PlayerPicture.Location.X, Player1.PlayerPicture.Location.Y + 90);
+            Controls.Add(Player1.HealthBar);
+
+            if (Player1.PickedUpVial)
+            {
+                lblPowerUp.Text = $"Vial! Damage is now: {Player1.Damage}!";
+                lblPowerUp.Show();
+                pickupCount--;
+
+                if(pickupCount == 0)
+                {
+                    lblPowerUp.Hide();
+                    pickupCount = 200;
+                    Player1.PickedUpVial = false;
+                }
+            }
+
+            if (Player1.LevelingUp && !Player1.PickedUpVial)
+            {
+                lblLevelUp.Text = $"Level Up! Level: {Player1.Level}!";
+                lblLevelUp.Show();
+                LevelUpCount--;
+
+                if (LevelUpCount == 0)
+                {
+                    lblLevelUp.Hide();
+                    LevelUpCount = 100;
+                    Player1.LevelingUp = false;
+                }
             }
         }
 
@@ -141,6 +218,52 @@ namespace PROG225_GnomesAndWarriors
                 mouseHeld = MouseHeld.NoSpell;
             }
             HeartbeatPaintEventHandler(e);
+        }
+
+        private void CheckForPlayerEnemyCollision()
+        {
+            enemies.ForEach(enemy =>
+            {
+                if (Player1.Bounds.IntersectsWith(enemy.Bounds))
+                {
+                    if (!Player1.Invulnerable)
+                    {
+                        Player1.Health -= enemy.Damage;
+                        if (Player1.Health < 0) Player1.Health = 0;
+                        Player1.Invulnerable = true;
+                        Player1.HealthBar.Value = Player1.Health;
+                    }
+                }
+            });
+
+            if (Player1.Health == 0) Player1.Die(Player1);
+        }
+
+        private void CheckForPlayerVialCollision()
+        {
+            for (int i = 0; i < powerVials.Count; i++)
+            {
+                if (Player1.Bounds.IntersectsWith(powerVials[i].Bounds))
+                {
+                    Player1.Damage = (int)(Player1.Damage * 2);
+                    Player1.PickedUpVial = true;
+                    IVial ivail = powerVials[i];
+                    Controls.Remove(ivail.VialPicture);
+                    powerVials.Remove(powerVials[i]);
+                }
+            }
+
+            for (int i = 0; i < healthVials.Count; i++)
+            {
+                if (Player1.Bounds.IntersectsWith(healthVials[i].Bounds))
+                {
+                    Player1.Health = Player1.MaxHealth;
+                    Player1.HealthBar.Value = Player1.MaxHealth;
+                    IVial ivail = healthVials[i];
+                    Controls.Remove(ivail.VialPicture);
+                    healthVials.Remove(healthVials[i]);
+                }
+            }
         }
 
         private void CheckKeyPress(KeyEventArgs e)

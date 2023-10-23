@@ -105,6 +105,9 @@ namespace PROG225_GnomesAndWarriors
         {
             Random coinflip = new Random();
 
+            rightSpawnArea = frmGameScreen.GameScreen.Width - 200;
+            bottomSpawnArea = frmGameScreen.GameScreen.Height - 200;
+
             int xLocation = 0;
             int yLocation = 0;
 

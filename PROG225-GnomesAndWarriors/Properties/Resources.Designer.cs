@@ -123,6 +123,16 @@ namespace PROG225_GnomesAndWarriors.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap HealthPotionSmall {
+            get {
+                object obj = ResourceManager.GetObject("HealthPotionSmall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Mage {
             get {
                 object obj = ResourceManager.GetObject("Mage", resourceCulture);
@@ -136,6 +146,16 @@ namespace PROG225_GnomesAndWarriors.Properties {
         internal static System.Drawing.Bitmap MageFlipped {
             get {
                 object obj = ResourceManager.GetObject("MageFlipped", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PowerPotionSmall {
+            get {
+                object obj = ResourceManager.GetObject("PowerPotionSmall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

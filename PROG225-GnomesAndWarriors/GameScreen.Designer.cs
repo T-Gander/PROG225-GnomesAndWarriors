@@ -58,6 +58,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer tmrHeartbeat;
+        public System.Windows.Forms.Timer tmrHeartbeat;
     }
 }
