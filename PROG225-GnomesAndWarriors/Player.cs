@@ -131,24 +131,16 @@ namespace PROG225_GnomesAndWarriors
                 pictureIndex++;
                 currentWaitFrame = 0;
             }
-            else
-            {
-                currentWaitFrame++;
-            }
+            else currentWaitFrame++;
 
             PlayerPicture.Invalidate();
         }
 
         public override void Move()
         {
-            if (frmGameScreen.GameScreen.UpPressed)
-            {
-                Location = new Point(Location.X, Location.Y - Agility);
-            }
-            if (frmGameScreen.GameScreen.DownPressed)
-            {
-                Location = new Point(Location.X, Location.Y + Agility);
-            }
+            if (frmGameScreen.GameScreen.UpPressed) Location = new Point(Location.X, Location.Y - Agility);
+            if (frmGameScreen.GameScreen.DownPressed) Location = new Point(Location.X, Location.Y + Agility);
+
             if (frmGameScreen.GameScreen.LeftPressed)
             {
                 Location = new Point(Location.X - Agility, Location.Y);

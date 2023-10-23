@@ -167,10 +167,7 @@ namespace PROG225_GnomesAndWarriors
                     MessageBox.Show(ex.Message);
                 }
             }
-            else
-            {
-                DissolveSpell();
-            }
+            else DissolveSpell();
         }
 
         public void DissolveSpell()

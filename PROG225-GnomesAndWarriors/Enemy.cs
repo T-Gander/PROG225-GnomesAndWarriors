@@ -35,10 +35,7 @@ namespace PROG225_GnomesAndWarriors
 
         private void CheckHealth()
         {
-            if (Health <= 0)
-            {
-                Die(this);
-            }
+            if (Health <= 0) Die(this);
         }
 
         public override void Move()
@@ -58,10 +55,7 @@ namespace PROG225_GnomesAndWarriors
                         spell.DissolveSpell();
                         i = -1;
                     }
-                    else
-                    {
-                        spell.Damage -= 1;
-                    }
+                    else spell.Damage -= 1;
                 }
             }
             CheckHealth();
@@ -121,10 +115,7 @@ namespace PROG225_GnomesAndWarriors
                 bool flipResult = false;
                 int result = coinflip.Next(2);
 
-                if(result > 0)
-                {
-                    flipResult = true;
-                }
+                if(result > 0) flipResult = true;
 
                 switch (i)
                 {
@@ -144,22 +135,10 @@ namespace PROG225_GnomesAndWarriors
 
             Random randLocation = new Random();
 
-            if (left)
-            {
-                xLocation = randLocation.Next(1,leftSpawnArea);
-            }
-            if(right)
-            {
-                xLocation = randLocation.Next(rightSpawnArea);
-            }
-            if(up)
-            {
-                yLocation = randLocation.Next(1,topSpawnArea);
-            }
-            if(down)
-            {
-                yLocation = randLocation.Next(bottomSpawnArea);
-            }
+            if (left) xLocation = randLocation.Next(1, leftSpawnArea);
+            if (right) xLocation = randLocation.Next(rightSpawnArea);
+            if (up) yLocation = randLocation.Next(1, topSpawnArea);
+            if (down) yLocation = randLocation.Next(bottomSpawnArea);
 
             return new Point(xLocation,yLocation);
         }
